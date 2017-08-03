@@ -16,6 +16,7 @@
 		<a href="auth/twitter?scope=public_profile">Login with Twitter</a><br/>
 		<a href="auth/github?scope=public_profile">Login with Github</a><br/>
 		<a href="auth/linkedin?scope=r_basicprofile,r_emailaddress">Login with Linkedin</a><br/>
+		<a href="auth/google?scope=https://www.googleapis.com/auth/userinfo.email">Login with Google</a><br/>
 
 
 	</div>
@@ -27,7 +28,5 @@
 		<button ng-click="getSocialDetails()">Get Facebook Details</button>
 		<pre>{{socialDetails | json}}</pre>
 	</div>
-
-	<div style="color:white">this is OmicsDI 2.0</div>
 </body>
 </html>
