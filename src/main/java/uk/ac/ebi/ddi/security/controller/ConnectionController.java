@@ -1,11 +1,9 @@
 package uk.ac.ebi.ddi.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionKey;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.*;
 import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
+import org.springframework.social.connect.support.OAuth2Connection;
 import org.springframework.social.facebook.api.Facebook;
 import org.europepmc.springframework.social.orcid.api.OrcidApi;
 import org.springframework.util.MultiValueMap;
@@ -60,5 +58,23 @@ public class ConnectionController {
                 }
             }
         }
+    }
+
+    @RequestMapping(value = "/api/users/{UserID}/connections/{provider}", method = RequestMethod.GET)
+    @CrossOrigin
+    public ConnectionData getConnectionData(@PathVariable String UserID, @PathVariable String provider) {
+        ConnectionRepository repo = this.mognoUsersConnectionRepository.createConnectionRepository(UserID);
+
+        MultiValueMap<String,Connection<?>> connections = repo.findAllConnections();
+        for (String connection : connections.keySet()){
+            if (connections.get(connection).size() > 0){
+                ConnectionKey key = connections.get(connection).get(0).getKey();
+                if(key.getProviderId().equals(provider)){
+                    Connection c = connections.get(connection).get(0);
+                    return c.createData();
+                }
+            }
+        }
+        return null;
     }
 }
