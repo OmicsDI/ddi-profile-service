@@ -160,6 +160,16 @@ public class UserController {
 		return mongoUserDetailsRepository.findAll();
 	}
 
+	@RequestMapping(value = "/api/users/count", method = RequestMethod.GET)
+	@CrossOrigin
+	public int getUsersCount() {
+		int size = 0;
+		for(MongoUser value : mongoUserDetailsRepository.findAll()) {
+			size++;
+		}
+		return size;
+	}
+
 	@RequestMapping(value = "/api/users/{userId}/savedsearches", method = RequestMethod.GET)
 	@CrossOrigin
 	public Iterable<SavedSearch> getSavedSearches(@PathVariable String userId) {
