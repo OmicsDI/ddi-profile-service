@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.ac.ebi.ddi.security.model.*;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.security.repo.SavedSearchRepository;
+import uk.ac.ebi.ddi.security.repo.SelectedDatasetsRepository;
 import uk.ac.ebi.ddi.security.repo.WatchedDatasetsRepository;
 
 import javax.servlet.ServletContext;
@@ -32,6 +33,9 @@ public class UserController {
 
 	@Autowired
 	WatchedDatasetsRepository watchedDatasetsRepository;
+
+	@Autowired
+	SelectedDatasetsRepository selectedDatasetsRepository;
 
 	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
 	@CrossOrigin
@@ -204,6 +208,24 @@ public class UserController {
 	@CrossOrigin
 	public void deleteWatchedDataset(@PathVariable String userId,@PathVariable String id) {
 		watchedDatasetsRepository.delete(id);
+	}
+
+	@RequestMapping(value = "/api/users/{userId}/selected", method = RequestMethod.POST)
+	@CrossOrigin
+	public void setSelectedDatasets(@PathVariable String userId, @RequestBody DataSetShort[] datasets) {
+		SelectedDatasets d = new SelectedDatasets();
+
+		d.UserId = userId;
+		d.datasets = datasets;
+
+		selectedDatasetsRepository.save(d);
+	}
+
+	@RequestMapping(value = "/api/users/{userId}/selected", method = RequestMethod.GET)
+	@CrossOrigin
+	public DataSetShort[] getSelectedDatasets(@PathVariable String userId) {
+		SelectedDatasets d = selectedDatasetsRepository.findByUserId(userId).iterator().next();
+		return (null!=d ? d.datasets : new DataSetShort[]{});
 	}
 
 }
