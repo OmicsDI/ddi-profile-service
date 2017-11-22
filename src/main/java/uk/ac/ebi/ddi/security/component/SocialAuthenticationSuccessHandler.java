@@ -34,7 +34,7 @@ public class SocialAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 		// Add UserAuthentication to the response
 		final UserAuthentication userAuthentication = new UserAuthentication(authenticatedUser);
 
-		tokenAuthenticationService.addAuthentication(response, userAuthentication);
+		tokenAuthenticationService.addAuthentication(request, response, userAuthentication);
 
 		super.onAuthenticationSuccess(request, response, authentication);
 	}

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 import uk.ac.ebi.ddi.security.TokenHandler;
 import uk.ac.ebi.ddi.security.model.UserAuthentication;
@@ -31,7 +32,7 @@ public class TokenAuthenticationService {
 	@Autowired
 	Environment env;
 
-	public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) {
+	public void addAuthentication(HttpServletRequest request, HttpServletResponse response, UserAuthentication authentication) {
 		final MongoUser user = authentication.getDetails();
 		user.setExpires(System.currentTimeMillis() + TEN_DAYS);
 		final String token = tokenHandler.createTokenForUser(user);
@@ -44,7 +45,14 @@ public class TokenAuthenticationService {
 		final String targetUrl = env.getRequiredProperty("security.targetUrl");
 
 		try {
-			response.sendRedirect(targetUrl + "?AUTH_TOKEN=" + token);
+			String state = request.getParameter("state");
+			String url = targetUrl + "?AUTH_TOKEN=" + token;
+
+			if(!StringUtils.isEmpty(state)){
+				url += "&state="+state;
+			}
+
+			response.sendRedirect(url);
 		}catch(Exception ex){
 			System.out.print("exception sending redirect" + ex.getMessage());
 		}
