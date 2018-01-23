@@ -14,9 +14,9 @@ import uk.ac.ebi.ddi.security.model.DomainStats;
 import uk.ac.ebi.ddi.security.model.Facet;
 import uk.ac.ebi.ddi.security.model.MongoUser;
 import uk.ac.ebi.ddi.security.model.StatRecord;
+import uk.ac.ebi.ddi.security.repo.IDatasetRepo;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
-import uk.ac.ebi.ddi.service.db.repo.dataset.IDatasetRepo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
