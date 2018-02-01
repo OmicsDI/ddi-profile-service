@@ -14,9 +14,10 @@ import uk.ac.ebi.ddi.security.model.DomainStats;
 import uk.ac.ebi.ddi.security.model.Facet;
 import uk.ac.ebi.ddi.security.model.MongoUser;
 import uk.ac.ebi.ddi.security.model.StatRecord;
-import uk.ac.ebi.ddi.security.repo.IDatasetRepo;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
+import uk.ac.ebi.ddi.service.db.repo.dataset.IDatasetRepo;
+import uk.ac.ebi.ddi.service.db.service.database.DatabaseDetailService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,13 +36,16 @@ import java.util.Set;
 public class MongoUserDetailsService implements UserDetailsService, SocialUserDetailsService {
 
     private MongoUserDetailsRepository mongoUserDetailsRepository;
-    
-    private IDatasetRepo datasetRepo;
+
+	private IDatasetRepo datasetRepo;
+
+	private DatabaseDetailService databaseDetailService;
 
     @Autowired
     MongoUserDetailsService(MongoUserDetailsRepository mongoUserDetailsRepository){
         this.mongoUserDetailsRepository = mongoUserDetailsRepository;
         this.datasetRepo = datasetRepo;
+        this.databaseDetailService = databaseDetailService;
     }
 
     public MongoUser findById(String Id){
@@ -199,34 +203,13 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 			map.put("Unknown", 0);
 			map.put("Not available", 0);
 		}
-
-		Map<String, String> mapForDatabases;
-		{
-			mapForDatabases = new HashMap<String, String>();
-			mapForDatabases.put("arrayexpress-repository", "ArrayExpress");
-			mapForDatabases.put("atlas-experiments", "Expression Atlas Experiments");
-			mapForDatabases.put("biomodels", "BioModels");
-			mapForDatabases.put("ega", "EGA");
-			mapForDatabases.put("gnps", "GNPS");
-			mapForDatabases.put("gpmdb", "GPMdb");
-			mapForDatabases.put("jpost", "jPOST");
-			mapForDatabases.put("lincs", "LINCS");
-			mapForDatabases.put("massive", "MassIVE");
-			mapForDatabases.put("metabolights_dataset", "MetaboLights Dataset");
-			mapForDatabases.put("metabolome_express", "MetabolomeExpress");
-			mapForDatabases.put("metabolomics_workbench", "MetabolomicsWorkbench");
-			mapForDatabases.put("Paxdb", "Paxdb");
-			mapForDatabases.put("peptide_atlas", "PeptideAtlas");
-			mapForDatabases.put("pride", "PRIDE");
-		}
-
 		MongoUser mongoUser = mongoUserDetailsRepository.findByUserId(userId);
 		DataSet[] dataSets = mongoUser.getDataSets();
 		if (dataSets != null) {
 			ArrayList<DataSet> list = new ArrayList<DataSet>(Arrays.asList(dataSets));
 			for (DataSet dataSet : list) {
 				String id = dataSet.getId();
-				String database = mapForDatabases.get(dataSet.getSource());
+				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
 				Dataset existingDataset = datasetRepo.findByAccessionDatabaseQuery(id, database);
 				// issues need to fix
 				String omicsType = (String) existingDataset.getAdditional().get("omics_type").toArray()[0];
@@ -247,26 +230,6 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 	}
 
 	public List getOmicsTypeByYear(String userId) {
-		Map<String, String> mapForDatabases;
-		{
-			mapForDatabases = new HashMap<String, String>();
-			mapForDatabases.put("arrayexpress-repository", "ArrayExpress");
-			mapForDatabases.put("atlas-experiments", "Expression Atlas Experiments");
-			mapForDatabases.put("biomodels", "BioModels");
-			mapForDatabases.put("ega", "EGA");
-			mapForDatabases.put("gnps", "GNPS");
-			mapForDatabases.put("gpmdb", "GPMdb");
-			mapForDatabases.put("jpost", "jPOST");
-			mapForDatabases.put("lincs", "LINCS");
-			mapForDatabases.put("massive", "MassIVE");
-			mapForDatabases.put("metabolights_dataset", "MetaboLights Dataset");
-			mapForDatabases.put("metabolome_express", "MetabolomeExpress");
-			mapForDatabases.put("metabolomics_workbench", "MetabolomicsWorkbench");
-			mapForDatabases.put("Paxdb", "Paxdb");
-			mapForDatabases.put("peptide_atlas", "PeptideAtlas");
-			mapForDatabases.put("pride", "PRIDE");
-		}
-
 		MongoUser mongoUser = mongoUserDetailsRepository.findByUserId(userId);
 		DataSet[] dataSets = mongoUser.getDataSets();
 		if (dataSets != null) {
@@ -274,7 +237,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 			Set<String> set = new HashSet<>();
 			for (DataSet dataSet : dataSets) {
 				Dataset data = datasetRepo.findByAccessionDatabaseQuery(dataSet.getId(),
-						mapForDatabases.get(dataSet.getSource()));
+						databaseDetailService.retriveAnchorName(dataSet.getSource()));
 				list.add(data);
 				// issue need to fix
 				String time = (String) data.getDates().get("publication").toArray()[0];
