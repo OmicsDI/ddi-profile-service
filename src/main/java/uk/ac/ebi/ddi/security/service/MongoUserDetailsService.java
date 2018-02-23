@@ -15,6 +15,7 @@ import uk.ac.ebi.ddi.security.model.Facet;
 import uk.ac.ebi.ddi.security.model.MongoUser;
 import uk.ac.ebi.ddi.security.model.StatRecord;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
+import uk.ac.ebi.ddi.service.db.model.database.DatabaseDetail;
 import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
 import uk.ac.ebi.ddi.service.db.repo.dataset.IDatasetRepo;
 import uk.ac.ebi.ddi.service.db.service.database.DatabaseDetailService;
@@ -144,24 +145,11 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
     }
     
     public List getDomain(String userId) {
-		Map<String, Integer> map;
-		{
-			map = new HashMap<String, Integer>();
-			map.put("arrayexpress-repository", 0);
-			map.put("atlas-experiments", 0);
-			map.put("biomodels", 0);
-			map.put("ega", 0);
-			map.put("gnps", 0);
-			map.put("gpmdb", 0);
-			map.put("jpost", 0);
-			map.put("lincs", 0);
-			map.put("massive", 0);
-			map.put("metabolights_dataset", 0);
-			map.put("metabolome_express", 0);
-			map.put("metabolomics_workbench", 0);
-			map.put("Paxdb", 0);
-			map.put("peptide_atlas", 0);
-			map.put("pride", 0);
+		List<DatabaseDetail> databaseList =  databaseDetailService.getDatabaseList();
+		Map<String, Integer> databaseMap = new HashMap<>();
+		//get all database name
+		for(DatabaseDetail databaseDetail : databaseList){
+			databaseMap.put(databaseDetail.getSource(),0);
 		}
 
 		MongoUser mongoUser = mongoUserDetailsRepository.findByUserId(userId);
@@ -170,16 +158,13 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 		if (dataSets != null) {
 			ArrayList<DataSet> list = new ArrayList<DataSet>(Arrays.asList(dataSets));
 			for (DataSet dataSet : list) {
-				String b = dataSet.getSource();
-				int a = map.get(b);
-				System.out.println(a);
-				map.put(dataSet.getSource(), (int) (map.get(dataSet.getSource()) + 1));
+				databaseMap.put(dataSet.getSource(), databaseMap.get(dataSet.getSource()) + 1);
 			}
 
 			ArrayList<DomainStats> domainList = new ArrayList<>();
 
-			for (String str : map.keySet()) {
-				DomainStats domainStats = new DomainStats(new StatRecord(str, map.get(str).toString(), str), null);
+			for (String str : databaseMap.keySet()) {
+				DomainStats domainStats = new DomainStats(new StatRecord(str, databaseMap.get(str).toString(), str), null);
 				domainList.add(domainStats);
 			}
 
