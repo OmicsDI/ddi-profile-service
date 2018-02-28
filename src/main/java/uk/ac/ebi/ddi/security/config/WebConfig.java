@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@EnableMongoRepositories("uk.ac.ebi.ddi.security.repo")
+@EnableMongoRepositories({"uk.ac.ebi.ddi.security.repo","uk.ac.ebi.ddi.service.db"})
 @ComponentScan 
 public class WebConfig extends WebMvcConfigurerAdapter {
 

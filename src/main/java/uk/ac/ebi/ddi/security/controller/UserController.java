@@ -14,6 +14,7 @@ import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.security.repo.SavedSearchRepository;
 import uk.ac.ebi.ddi.security.repo.SelectedDatasetsRepository;
 import uk.ac.ebi.ddi.security.repo.WatchedDatasetsRepository;
+import uk.ac.ebi.ddi.security.service.MongoUserDetailsService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -36,6 +38,9 @@ public class UserController {
 
 	@Autowired
 	SelectedDatasetsRepository selectedDatasetsRepository;
+	
+	@Autowired
+	MongoUserDetailsService mongoUserDetailsService;
 
 	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
 	@CrossOrigin
@@ -226,6 +231,24 @@ public class UserController {
 	public DataSetShort[] getSelectedDatasets(@PathVariable String userId) {
 		SelectedDatasets d = selectedDatasetsRepository.findByUserId(userId).iterator().next();
 		return (null!=d ? d.datasets : new DataSetShort[]{});
+	}
+	
+	@RequestMapping(value = "/api/users/{userId}/domain", method = RequestMethod.GET)
+	@CrossOrigin
+	public List getDatasets(@PathVariable String userId) {
+		return mongoUserDetailsService.getDomain(userId);
+	}
+	
+	@RequestMapping(value = "/api/users/{userId}/omics", method = RequestMethod.GET)
+	@CrossOrigin
+	public List getOmicstype(@PathVariable String userId) {
+		return mongoUserDetailsService.getOmicsType(userId);
+	}
+	
+	@RequestMapping(value = "/api/users/{userId}/omicsbyyears", method = RequestMethod.GET)
+	@CrossOrigin
+	public List getOmicsByYears(@PathVariable String userId) {
+		return mongoUserDetailsService.getOmicsTypeByYear(userId);
 	}
 
 }
