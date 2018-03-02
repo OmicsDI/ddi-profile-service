@@ -43,7 +43,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 	private DatabaseDetailService databaseDetailService;
 
     @Autowired
-    MongoUserDetailsService(MongoUserDetailsRepository mongoUserDetailsRepository){
+    MongoUserDetailsService(MongoUserDetailsRepository mongoUserDetailsRepository,DatabaseDetailService databaseDetailService,IDatasetRepo datasetRepo){
         this.mongoUserDetailsRepository = mongoUserDetailsRepository;
         this.datasetRepo = datasetRepo;
         this.databaseDetailService = databaseDetailService;
@@ -221,8 +221,13 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 			List<Dataset> list = new ArrayList<>();
 			Set<String> set = new HashSet<>();
 			for (DataSet dataSet : dataSets) {
-				Dataset data = datasetRepo.findByAccessionDatabaseQuery(dataSet.getId(),
-						databaseDetailService.retriveAnchorName(dataSet.getSource()));
+//				Dataset data = datasetRepo.findByAccessionDatabaseQuery(dataSet.getId(),
+//						databaseDetailService.retriveAnchorName(dataSet.getSource()));
+				String id = dataSet.getId();
+				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
+				Dataset data = datasetRepo.findByAccessionDatabaseQuery(id, database);
+
+
 				list.add(data);
 				// issue need to fix
 				String time = (String) data.getDates().get("publication").toArray()[0];
