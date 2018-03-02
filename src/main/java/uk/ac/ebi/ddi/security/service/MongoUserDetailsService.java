@@ -226,7 +226,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				list.add(data);
 				// issue need to fix
 				String time = (String) data.getDates().get("publication").toArray()[0];
-				String year = time.substring(time.lastIndexOf(" ") + 1);
+				String year = time.substring(0,time.indexOf("-"));
 
 				set.add(year);
 			}
@@ -245,7 +245,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 
 				for (Dataset dataset : list) {
 					String time = (String) dataset.getDates().get("publication").toArray()[0];
-					String year = time.substring(time.lastIndexOf(" ") + 1);
+					String year = time.substring(0,time.indexOf("-"));
 					if (!year.equals(str)) {
 						continue;
 					} else {
