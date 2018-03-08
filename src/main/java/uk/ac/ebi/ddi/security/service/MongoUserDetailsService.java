@@ -197,6 +197,9 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
 				Dataset existingDataset = datasetRepo.findByAccessionDatabaseQuery(id, database);
 				// issues need to fix
+				if(existingDataset==null){
+					continue;
+				}
 				String omicsType = (String) existingDataset.getAdditional().get("omics_type").toArray()[0];
 				map.put(omicsType, (int) (map.get(omicsType) + 1));
 			}
@@ -226,10 +229,13 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				String id = dataSet.getId();
 				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
 				Dataset data = datasetRepo.findByAccessionDatabaseQuery(id, database);
-
+				if(data==null){
+					continue;
+				}
 
 				list.add(data);
 				// issue need to fix
+
 				String time = (String) data.getDates().get("publication").toArray()[0];
 				String year = time.substring(0,time.indexOf("-"));
 
