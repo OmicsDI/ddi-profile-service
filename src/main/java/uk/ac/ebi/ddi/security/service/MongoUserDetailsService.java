@@ -20,14 +20,7 @@ import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
 import uk.ac.ebi.ddi.service.db.repo.dataset.IDatasetRepo;
 import uk.ac.ebi.ddi.service.db.service.database.DatabaseDetailService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by user on 3/12/2017.
@@ -229,7 +222,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				String id = dataSet.getId();
 				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
 				Dataset data = datasetRepo.findByAccessionDatabaseQuery(id, database);
-				if(data==null){
+				if (data == null) {
 					continue;
 				}
 
@@ -237,13 +230,17 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				// issue need to fix
 
 				String time = (String) data.getDates().get("publication").toArray()[0];
-				String year = time.substring(0,time.indexOf("-"));
+				String year = time.substring(0, time.indexOf("-"));
 
 				set.add(year);
 			}
 			List<Map<String, String>> listForMap = new ArrayList<Map<String, String>>();
-
-			for (String str : set) {
+			ArrayList<String> listForSet = new ArrayList<>();
+			for(String str : set){
+				listForSet.add(str);
+			}
+			Collections.sort(listForSet);
+			for (String str : listForSet) {
 
 				Map<String, Integer> map = new HashMap<>();
 				map.put("year", Integer.parseInt(str));
