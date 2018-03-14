@@ -20,6 +20,8 @@ import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
 import uk.ac.ebi.ddi.service.db.repo.dataset.IDatasetRepo;
 import uk.ac.ebi.ddi.service.db.service.database.DatabaseDetailService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -221,7 +223,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 //						databaseDetailService.retriveAnchorName(dataSet.getSource()));
 				String id = dataSet.getId();
 				String database = databaseDetailService.retriveAnchorName(dataSet.getSource());
-				Dataset data = datasetRepo.findByAccessionDatabaseQuery(id, database);
+  				Dataset data = datasetRepo.findByAccessionDatabaseQuery(id, database);
 				if (data == null) {
 					continue;
 				}
@@ -230,8 +232,22 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				// issue need to fix
 
 				String time = (String) data.getDates().get("publication").toArray()[0];
-				String year = time.substring(0, time.indexOf("-"));
-
+				String year = null;
+				if(time.indexOf("-")<=0){
+					SimpleDateFormat sdf = new SimpleDateFormat ("EEE MMM dd HH:mm:ss Z yyyy", Locale.UK);
+					try
+					{
+						Date date=sdf.parse(time);
+						SimpleDateFormat sdf1=new SimpleDateFormat("yyyy");
+						year=sdf1.format(date);
+					}
+					catch (ParseException e)
+					{
+						e.printStackTrace();
+					}
+				}else {
+					year = time.substring(0, time.indexOf("-"));
+				}
 				set.add(year);
 			}
 			List<Map<String, String>> listForMap = new ArrayList<Map<String, String>>();
@@ -253,7 +269,22 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 
 				for (Dataset dataset : list) {
 					String time = (String) dataset.getDates().get("publication").toArray()[0];
-					String year = time.substring(0,time.indexOf("-"));
+					String year = null;
+					if(time.indexOf("-")<=0){
+						SimpleDateFormat sdf = new SimpleDateFormat ("EEE MMM dd HH:mm:ss Z yyyy", Locale.UK);
+						try
+						{
+							Date date=sdf.parse(time);
+							SimpleDateFormat sdf1=new SimpleDateFormat("yyyy");
+							year=sdf1.format(date);
+						}
+						catch (ParseException e)
+						{
+							e.printStackTrace();
+						}
+					}else {
+						year = time.substring(0, time.indexOf("-"));
+					}
 					if (!year.equals(str)) {
 						continue;
 					} else {
