@@ -264,6 +264,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
 				map.put("metabolomics", 0);
 				map.put("proteomics", 0);
 				map.put("transcriptomics", 0);
+				map.put("multiomics",0);
 
 				Map<String, String> mapForList = new HashMap<String, String>();
 
