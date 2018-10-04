@@ -229,8 +229,12 @@ public class UserController {
 	@RequestMapping(value = "/api/users/{userId}/selected", method = RequestMethod.GET)
 	@CrossOrigin
 	public DataSetShort[] getSelectedDatasets(@PathVariable String userId) {
-		SelectedDatasets d = selectedDatasetsRepository.findByUserId(userId).iterator().next();
-		return (null!=d ? d.datasets : new DataSetShort[]{});
+		Iterable<SelectedDatasets> datasets = selectedDatasetsRepository.findByUserId(userId);
+		if (datasets.iterator().hasNext()) {
+			SelectedDatasets d = datasets.iterator().next();
+			return (null!=d ? d.datasets : new DataSetShort[]{});
+		}
+		return new DataSetShort[]{};
 	}
 	
 	@RequestMapping(value = "/api/users/{userId}/domain", method = RequestMethod.GET)
