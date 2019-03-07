@@ -201,8 +201,8 @@ public class UserController {
 
 	@RequestMapping(value = "/api/users/{userId}/watches", method = RequestMethod.POST)
 	@CrossOrigin
-	public void saveWatchedDataset(@RequestBody WatchedDataset watchedDataset) {
-		watchedDatasetsRepository.save(watchedDataset);
+	public WatchedDataset saveWatchedDataset(@RequestBody WatchedDataset watchedDataset) {
+		return watchedDatasetsRepository.save(watchedDataset);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/watches/{id}", method = RequestMethod.DELETE)
