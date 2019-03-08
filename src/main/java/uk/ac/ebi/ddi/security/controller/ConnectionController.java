@@ -9,6 +9,7 @@ import org.europepmc.springframework.social.orcid.api.OrcidApi;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.ddi.security.model.MongoUser;
+import uk.ac.ebi.ddi.security.security.UserSecureUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,10 +44,11 @@ public class ConnectionController {
         return result.toArray( new String[result.size()]);
     }
 
-    @RequestMapping(value = "/api/users/{UserID}/connections/{provider}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/users/{userid}/connections/{provider}", method = RequestMethod.DELETE)
     @CrossOrigin
-    public void deleteUserConnection(@PathVariable String UserID, @PathVariable String provider) {
-        ConnectionRepository repo = this.mognoUsersConnectionRepository.createConnectionRepository(UserID);
+    public void deleteUserConnection(@PathVariable String userid, @PathVariable String provider) {
+        UserSecureUtils.verifyUser(userid);
+        ConnectionRepository repo = this.mognoUsersConnectionRepository.createConnectionRepository(userid);
 
         MultiValueMap<String,Connection<?>> connections = repo.findAllConnections();
         for (String connection : connections.keySet()){

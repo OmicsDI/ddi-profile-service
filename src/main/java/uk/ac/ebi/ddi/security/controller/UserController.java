@@ -2,18 +2,19 @@ package uk.ac.ebi.ddi.security.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import uk.ac.ebi.ddi.security.exceptions.UnauthenticatedException;
 import uk.ac.ebi.ddi.security.model.*;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.security.repo.SavedSearchRepository;
 import uk.ac.ebi.ddi.security.repo.SelectedDatasetsRepository;
 import uk.ac.ebi.ddi.security.repo.WatchedDatasetsRepository;
+import uk.ac.ebi.ddi.security.security.UserSecureUtils;
 import uk.ac.ebi.ddi.security.service.MongoUserDetailsService;
 
 import javax.servlet.ServletContext;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -69,6 +69,7 @@ public class UserController {
 	@RequestMapping(value = "/api/user/current", method = RequestMethod.POST)
 	@CrossOrigin
 	public void setMongoUser(@RequestBody MongoUser mongoUser) {
+		UserSecureUtils.verifyUser(mongoUser.getUserId());
 		MongoUser user = mongoUserDetailsRepository.findByUserId(mongoUser.getUserId());
 
 		mongoUser.setImage(user.getImage());
@@ -81,25 +82,23 @@ public class UserController {
 	@RequestMapping(value = "/api/users/{userId}/picture2", method = RequestMethod.POST)
 	@CrossOrigin
 	public void setUserPicture(@PathVariable String userId, @RequestBody String picture) {
+		UserSecureUtils.verifyUser(userId);
 		MongoUser user = mongoUserDetailsRepository.findByUserId(userId);
 
 		try {
-
 			byte[] b = picture.getBytes();
-
 			user.setImage(b);
-		}
-		catch(Exception ex){
+			mongoUserDetailsRepository.save(user);
+		} catch(Exception ex){
 			System.out.print("Exception:"+ex.getMessage());
 		}
-
-		mongoUserDetailsRepository.save(user);
 		//System.out.print("PIC:"+picture);
 	}
 
 	@PostMapping("/api/users/{userId}/picture")
 	public void handleFileUpload(@PathVariable String userId, @RequestParam(value = "file") MultipartFile file,
 								   RedirectAttributes redirectAttributes) {
+		UserSecureUtils.verifyUser(userId);
 		MongoUser user = mongoUserDetailsRepository.findByUserId(userId);
 		try {
 			byte[] b = file.getBytes();
@@ -178,53 +177,69 @@ public class UserController {
 	@RequestMapping(value = "/api/users/{userId}/savedsearches", method = RequestMethod.GET)
 	@CrossOrigin
 	public Iterable<SavedSearch> getSavedSearches(@PathVariable String userId) {
+		UserSecureUtils.verifyUser(userId);
 		return savedSearchRepository.findByUserId(userId);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/savedsearches", method = RequestMethod.POST)
 	@CrossOrigin
 	public void saveSavedSearch(@RequestBody SavedSearch savedSearch) {
+		UserSecureUtils.verifyUser(savedSearch.userId);
 		savedSearchRepository.save(savedSearch);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/savedsearches/{id}", method = RequestMethod.DELETE)
 	@CrossOrigin
 	public void deleteSavedSearch(@PathVariable String userId,@PathVariable String id) {
-		savedSearchRepository.delete(id);
+		UserSecureUtils.verifyUser(userId);
+		SavedSearch savedSearch = savedSearchRepository.findOne(id);
+		if (savedSearch.userId.equals(userId)) {
+			savedSearchRepository.delete(id);
+		} else {
+			throw new UnauthenticatedException();
+		}
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/watches", method = RequestMethod.GET)
 	@CrossOrigin
 	public Iterable<WatchedDataset> getWatchedDatasets(@PathVariable String userId) {
+		UserSecureUtils.verifyUser(userId);
 		return watchedDatasetsRepository.findByUserId(userId);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/watches", method = RequestMethod.POST)
 	@CrossOrigin
 	public WatchedDataset saveWatchedDataset(@RequestBody WatchedDataset watchedDataset) {
+		UserSecureUtils.verifyUser(watchedDataset.userId);
 		return watchedDatasetsRepository.save(watchedDataset);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/watches/{id}", method = RequestMethod.DELETE)
 	@CrossOrigin
 	public void deleteWatchedDataset(@PathVariable String userId,@PathVariable String id) {
-		watchedDatasetsRepository.delete(id);
+		UserSecureUtils.verifyUser(userId);
+		WatchedDataset watchedDataset = watchedDatasetsRepository.findOne(id);
+		if (watchedDataset.userId.equals(userId)) {
+			watchedDatasetsRepository.delete(id);
+		} else {
+			throw new UnauthenticatedException();
+		}
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/selected", method = RequestMethod.POST)
 	@CrossOrigin
 	public void setSelectedDatasets(@PathVariable String userId, @RequestBody DataSetShort[] datasets) {
+		UserSecureUtils.verifyUser(userId);
 		SelectedDatasets d = new SelectedDatasets();
-
 		d.UserId = userId;
 		d.datasets = datasets;
-
 		selectedDatasetsRepository.save(d);
 	}
 
 	@RequestMapping(value = "/api/users/{userId}/selected", method = RequestMethod.GET)
 	@CrossOrigin
 	public DataSetShort[] getSelectedDatasets(@PathVariable String userId) {
+		UserSecureUtils.verifyUser(userId);
 		Iterable<SelectedDatasets> datasets = selectedDatasetsRepository.findByUserId(userId);
 		if (datasets.iterator().hasNext()) {
 			SelectedDatasets d = datasets.iterator().next();
