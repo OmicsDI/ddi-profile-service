@@ -37,14 +37,8 @@ public class MongoConfig extends AbstractMongoConfiguration {
                 env.getRequiredProperty("mongo.authenticationDatabase"),
                 env.getRequiredProperty("mongo.password").toCharArray()
         ));
-        System.out.println(credentials.toString());
 
-        MongoClientOptions options = new MongoClientOptions.Builder()
-                .build();
-
-        MongoClient mongoClient =new MongoClient(serverAddress, credentials);
-
-        return mongoClient;
+        return new MongoClient(serverAddress, credentials);
     }
 
 }

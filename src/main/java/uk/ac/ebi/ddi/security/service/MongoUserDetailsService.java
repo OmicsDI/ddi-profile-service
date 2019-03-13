@@ -101,7 +101,7 @@ public class MongoUserDetailsService implements UserDetailsService, SocialUserDe
             u.setUserId(UserId);
         }
         //TODO: roles
-        u.setRoles("USER,ADMIN");
+        u.setRoles("USER");
         mongoUserDetailsRepository.save(u);
     }
 
