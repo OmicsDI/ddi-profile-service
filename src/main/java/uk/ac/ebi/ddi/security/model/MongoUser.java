@@ -44,6 +44,8 @@ public class MongoUser implements SocialUserDetails {
 
     String imageUrl;
 
+    String galaxyInstance;
+
 
     byte[] image;
 
@@ -150,6 +152,14 @@ public class MongoUser implements SocialUserDetails {
     }
     public byte[] getImage(){
         return this.image;
+    }
+
+    public String getGalaxyInstance() {
+        return galaxyInstance;
+    }
+
+    public void setGalaxyInstance(String galaxyInstance) {
+        this.galaxyInstance = galaxyInstance;
     }
 
     @Override
