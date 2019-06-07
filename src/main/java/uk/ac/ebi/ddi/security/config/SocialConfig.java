@@ -1,7 +1,5 @@
 package uk.ac.ebi.ddi.security.config;
 
-import java.lang.reflect.Field;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,27 +17,27 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.social.connect.mongo.MongoConnectionService;
-import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.elixir.api.Elixir;
-import org.springframework.social.elixir.connect.ElixirConnectionFactory;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
-import org.europepmc.springframework.social.orcid.api.OrcidApi;
-import org.europepmc.springframework.social.orcid.connect.OrcidConnectionFactory;
-import org.europepmc.springframework.social.orcid.utils.OrcidConfig;
-import org.europepmc.springframework.social.orcid.utils.OrcidConfigBroker;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
-
 import uk.ac.ebi.ddi.security.UserAuthenticationUserIdSource;
+import uk.ac.ebi.ddi.social.connect.mongo.MongoConnectionService;
+import uk.ac.ebi.ddi.social.connect.mongo.MongoUsersConnectionRepository;
+import uk.ac.ebi.ddi.social.elixir.api.Elixir;
+import uk.ac.ebi.ddi.social.elixir.connect.ElixirConnectionFactory;
+import uk.ac.ebi.ddi.social.orcid.api.OrcidApi;
+import uk.ac.ebi.ddi.social.orcid.connect.OrcidConnectionFactory;
+import uk.ac.ebi.ddi.social.orcid.utils.OrcidConfig;
+import uk.ac.ebi.ddi.social.orcid.utils.OrcidConfigBroker;
+
+import java.lang.reflect.Field;
 
 @Configuration
 @EnableSocial
@@ -49,11 +47,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
 		OrcidConfig config = new OrcidConfig();
 
-		config.setFrontendUrl(env.getProperty("orcid.frontend.url")); //"https://sandbox.orcid.org/"
-		config.setApiUrl(env.getProperty("orcid.api.url"));//"https://api.sandbox.orcid.org/v1.2/"
-		config.setPubApiUrl(env.getProperty("orcid.pub.url"));//"https://pub.sandbox.orcid.org/v1.2/"
-		config.setAuthorizeUrl(env.getProperty("orcid.authorize.url"));//"https://sandbox.orcid.org/oauth/authorize"
-		config.setAccessTokenUrl(env.getProperty("orcid.token.url"));//"https://sandbox.orcid.org/oauth/token"
+		config.setFrontendUrl(env.getProperty("orcid.frontend.url"));
+		config.setApiUrl(env.getProperty("orcid.api.url"));
+		config.setPubApiUrl(env.getProperty("orcid.pub.url"));
+		config.setAuthorizeUrl(env.getProperty("orcid.authorize.url"));
+		config.setAccessTokenUrl(env.getProperty("orcid.token.url"));
 
 		Field stringField = OrcidConfigBroker.class.getDeclaredField("orcidConfig");
 		stringField.setAccessible(true);

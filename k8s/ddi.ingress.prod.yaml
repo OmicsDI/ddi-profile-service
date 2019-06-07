@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: omicsdi-webservice-prod
+  namespace: prod
+spec:
+  rules:
+    - host: stage.omicsdi.org
+      http:
+        paths:
+          - path: /profilews
+            backend:
+              serviceName: omicsdi-ddi-webservice
+              servicePort: 8080
