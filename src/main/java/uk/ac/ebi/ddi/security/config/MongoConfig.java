@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,7 +31,15 @@ public class MongoConfig extends AbstractMongoConfiguration {
     @Bean
     public Mongo mongo() throws Exception {
 
-        ServerAddress serverAddress = new ServerAddress(env.getRequiredProperty("mongo.host"));
+        List<ServerAddress> serverAddresses = Arrays.asList(
+                new ServerAddress(env.getRequiredProperty("mongo.host"),
+                        Integer.parseInt(env.getRequiredProperty("mongo.port"))),
+                new ServerAddress(env.getRequiredProperty("mongo.host.two"),
+                        Integer.parseInt(env.getRequiredProperty("mongo.port"))),
+                new ServerAddress(env.getRequiredProperty("mongo.host.three"),
+                        Integer.parseInt(env.getRequiredProperty("mongo.port")))
+        );
+
         List<MongoCredential> credentials = new ArrayList<>();
         credentials.add(MongoCredential.createCredential(
                 env.getRequiredProperty("mongo.username"),
@@ -38,7 +47,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
                 env.getRequiredProperty("mongo.password").toCharArray()
         ));
 
-        return new MongoClient(serverAddress, credentials);
+        return new MongoClient(serverAddresses, credentials);
     }
 
 }

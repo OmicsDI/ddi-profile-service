@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omicsdi-ddi-webservice
+spec:
+  selector:
+    matchLabels:
+      app: omicsdi-ddi-webservice
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: omicsdi-ddi-webservice
+    spec:
+      containers:
+        - name: omicsdi-ddi-webservice
+          image: omicsdi/ddi-web-service:omicsdi.dev.01
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omicsdi-ddi-webservice
+  labels:
+    app: omicsdi-ddi-webservice
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: omicsdi-ddi-webservice

@@ -1,21 +1,13 @@
 package uk.ac.ebi.ddi.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.ddi.security.model.DataSet;
 import uk.ac.ebi.ddi.security.model.MongoUser;
-import uk.ac.ebi.ddi.security.model.UserAuthentication;
 import uk.ac.ebi.ddi.security.repo.MongoUserDetailsRepository;
 import uk.ac.ebi.ddi.security.security.UserSecureUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by user on 3/17/2017.

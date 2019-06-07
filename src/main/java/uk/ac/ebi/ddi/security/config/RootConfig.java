@@ -15,9 +15,8 @@ import javax.servlet.Filter;
 /**
  * Created by user on 3/16/2017.
  */
-//@EnableAutoConfiguration
 @Configuration
-@ComponentScan({"uk.ac.ebi.ddi.security","org.springframework.social.connect.mongo","uk.ac.ebi.ddi.service.db"})
+@ComponentScan({"uk.ac.ebi.ddi.security","uk.ac.ebi.ddi.social.connect.mongo","uk.ac.ebi.ddi.service.db"})
 public class RootConfig {
 
     @Bean
