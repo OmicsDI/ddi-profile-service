@@ -15,7 +15,7 @@ spec:
       containers:
         - name: omicsdi-ddi-profile-pod
           imagePullPolicy: Always
-          image: omicsdi/ddi-profile-service:omicsdi.dev.1
+          image: omicsdi/ddi-profile-service:omicsdi.dev.01
           env:
             - name: DDI_MONGO_DB
               valueFrom:
@@ -77,6 +77,71 @@ spec:
               value: "https://pub.orcid.org/oauth/token"
             - name: DDI_SECURITY_TARGET_URL
               value: "http://dev.omicsdi.org/profile"
+            - name: FACEBOOK_APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: FACEBOOK_APP_KEY
+            - name: FACEBOOK_APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: FACEBOOK_APP_SECRET
+            - name: FACEBOOK_APP_NAMESPACE
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: FACEBOOK_APP_NAMESPACE
+            - name: GITHUB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: GITHUB_CLIENT_ID
+            - name: GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: GITHUB_CLIENT_SECRET
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: TWITTER_CONSUMER_KEY
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: TWITTER_CONSUMER_SECRET
+            - name: ELIXIR_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: ELIXIR_CLIENT_ID
+            - name: ELIXIR_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: ELIXIR_CLIENT_SECRET
+            - name: LINKEDIN_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: LINKEDIN_CLIENT_ID
+            - name: LINKEDIN_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: LINKEDIN_CLIENT_SECRET
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: omicsdi
+                  key: GOOGLE_CLIENT_SECRET
           ports:
             - containerPort: 8080
 ---
