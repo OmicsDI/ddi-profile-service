@@ -48,7 +48,9 @@ public class UserController {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof UserAuthentication) {
 			MongoUser user = ((UserAuthentication) authentication).getDetails();
-			return mongoUserDetailsRepository.findByUserId(user.getUserId());
+			MongoUser userDetails = mongoUserDetailsRepository.findByUserId(user.getUserId());
+			userDetails.setImage(null);
+			return userDetails;
 		}
 		return new MongoUser(); //anonymous user support
 	}
