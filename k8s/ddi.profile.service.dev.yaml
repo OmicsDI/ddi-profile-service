@@ -15,7 +15,7 @@ spec:
       containers:
         - name: omicsdi-ddi-profile-pod
           imagePullPolicy: Always
-          image: omicsdi/ddi-profile-service:omicsdi.dev.1
+          image: omicsdi/ddi-profile-service:omicsdi.dev.01
           env:
             - name: DDI_MONGO_DB
               valueFrom:
@@ -77,6 +77,32 @@ spec:
               value: "https://pub.orcid.org/oauth/token"
             - name: DDI_SECURITY_TARGET_URL
               value: "http://dev.omicsdi.org/profile"
+            - name: FACEBOOK_APP_KEY
+              value: "1217968368302566"
+            - name: FACEBOOK_APP_SECRET
+              value: "541ee5c08daa6942264edbd416511f47"
+            - name: FACEBOOK_APP_NAMESPACE
+              value: "omicdi"
+            - name: GITHUB_CLIENT_ID
+              value: "fecb0da1d6c8a7ceed33"
+            - name: GITHUB_CLIENT_SECRET
+              value: "3ac75e6f4d348f2056bd0dd572e8e799bdd507ea"
+            - name: TWITTER_CONSUMER_KEY
+              value: "YMrGcvwC16hPlWDTMhzXul1xT"
+            - name: TWITTER_CONSUMER_SECRET
+              value: "uHAm1PCVETuFWxHcQc3hMw58JP2l4KC5XusVUyaGhAqwjuE83q"
+            - name: ELIXIR_CLIENT_ID
+              value: "4bb6b272-8fa4-4421-93a9-0e01e6815caa"
+            - name: ELIXIR_CLIENT_SECRET
+              value: "AI4soonZyeZ9JNbQQ4Nx8ZGMevLeCDyW6glVfktg109xnvCOk6MgE6k2LaMbERbIInKvbX8sK8k9mjMtgygdng4"
+            - name: LINKEDIN_CLIENT_ID
+              value: "86tjbycv3rxo1t"
+            - name: LINKEDIN_CLIENT_SECRET
+              value: "qTWcN3MMsZJEGPBu"
+            - name: GOOGLE_CLIENT_ID
+              value: "127176555632-1jevhjlj37ltk3t1m1pld16rq9dqn42n.apps.googleusercontent.com"
+            - name: GOOGLE_CLIENT_SECRET
+              value: "U5k2SMgUu61Rf2KvKTnvpELv"
           ports:
             - containerPort: 8080
 ---
