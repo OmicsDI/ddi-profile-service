@@ -87,10 +87,15 @@ public class SocialConfig extends SocialConfigurerAdapter {
 		cfConfig.addConnectionFactory(new OrcidConnectionFactory(
 				env.getProperty("orcid.clientId"),
 				env.getProperty("orcid.clientSecret")));
-		
-		cfConfig.addConnectionFactory(new GitHubConnectionFactory(
+
+		GitHubConnectionFactory github = new GitHubConnectionFactory(
 				env.getProperty("github.clientId"),
-				env.getProperty("github.clientSecret")));
+				env.getProperty("github.clientSecret"));
+
+		github.setScope("email,name");
+		cfConfig.addConnectionFactory(github);
+
+
 		cfConfig.addConnectionFactory(new TwitterConnectionFactory(
 				env.getProperty("twitter.consumerKey"),
 				env.getProperty("twitter.consumerSecret")));
