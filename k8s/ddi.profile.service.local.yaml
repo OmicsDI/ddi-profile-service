@@ -48,8 +48,6 @@ spec:
                 secretKeyRef:
                   name: omicsdi
                   key: MONGO_AUTH_DB
-            - name: DDI_PROFILE_ENDPOINT
-              value: "http://127.0.0.1:30090/profilews"
             - name: DDI_ORCID_CLIENT_ID
               valueFrom:
                 secretKeyRef:

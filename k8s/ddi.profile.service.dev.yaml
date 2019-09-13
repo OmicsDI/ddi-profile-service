@@ -48,8 +48,6 @@ spec:
                 secretKeyRef:
                   name: omicsdi
                   key: MONGO_AUTH_DB
-            - name: DDI_PROFILE_ENDPOINT
-              value: "https://www.omicsdi.org/profilews"
             - name: DDI_ORCID_CLIENT_ID
               valueFrom:
                 secretKeyRef:
