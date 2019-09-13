@@ -38,11 +38,11 @@ spec:
                   name: omicsdi
                   key: MONGO_PORT
             - name: DDI_MONGO_MACHINE_ONE
-              value: "mongod-0.mongodb-service.dev.svc.cluster.local"
+              value: "mongod-0.mongodb-service.local.svc.cluster.local"
             - name: DDI_MONGO_MACHINE_TWO
-              value: "mongod-0.mongodb-service.dev.svc.cluster.local"
+              value: "mongod-0.mongodb-service.local.svc.cluster.local"
             - name: DDI_MONGO_MACHINE_THREE
-              value: "mongod-0.mongodb-service.dev.svc.cluster.local"
+              value: "mongod-0.mongodb-service.local.svc.cluster.local"
             - name: DDI_MONGO_AUTH_DB
               valueFrom:
                 secretKeyRef:
@@ -150,8 +150,10 @@ metadata:
   labels:
     app: omicsdi-ddi-profile-service
 spec:
+  type: NodePort
   ports:
     - port: 8080
+      nodePort: 30090
       targetPort: 8080
   selector:
     app: omicsdi-ddi-profile-pod

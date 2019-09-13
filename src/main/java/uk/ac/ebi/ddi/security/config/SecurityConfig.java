@@ -2,7 +2,6 @@ package uk.ac.ebi.ddi.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
@@ -60,8 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 			@Override
 			public <O extends SocialAuthenticationFilter> O postProcess(O socialAuthenticationFilter) {
-				System.out.print("setting redirect url to:" + targetUrl);
-
 				socialAuthenticationSuccessHandler.setAlwaysUseDefaultTargetUrl(true);
 				socialAuthenticationSuccessHandler.setDefaultTargetUrl(targetUrl);
 				socialAuthenticationFilter.setAuthenticationSuccessHandler(socialAuthenticationSuccessHandler);
