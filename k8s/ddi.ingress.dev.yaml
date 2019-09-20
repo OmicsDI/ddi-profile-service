@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: omicsdi-profile-service-dev
+  namespace: dev
+spec:
+  rules:
+    - host: dev.omicsdi.org
+      http:
+        paths:
+          - path: /profilews
+            backend:
+              serviceName: omicsdi-ddi-profile-service
+              servicePort: 8080
