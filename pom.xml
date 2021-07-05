@@ -162,16 +162,16 @@
             <version>3.0.0.M1</version>
         </dependency>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>org.europepmc</groupId>
             <artifactId>spring-social-orcid</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <!--<dependency>
+            <version>2.0.1</version>
+        </dependency>-->
+        <dependency>
             <groupId>uk.ac.ebi.ddi.social</groupId>
             <artifactId>spring-social-orcid</artifactId>
             <version>2.0.2</version>
-        </dependency>-->
+        </dependency>
 		<dependency>
        	 	<groupId>org.springframework.social</groupId>
         	<artifactId>spring-social-github</artifactId>
