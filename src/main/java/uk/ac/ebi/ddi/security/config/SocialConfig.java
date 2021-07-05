@@ -19,19 +19,10 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.social.connect.mongo.MongoConnectionService;
-import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.elixir.api.Elixir;
-import org.springframework.social.elixir.connect.ElixirConnectionFactory;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.github.connect.GitHubConnectionFactory;
-import org.europepmc.springframework.social.orcid.api.OrcidApi;
-import org.europepmc.springframework.social.orcid.connect.OrcidConnectionFactory;
-import org.europepmc.springframework.social.orcid.utils.OrcidConfig;
-import org.europepmc.springframework.social.orcid.utils.OrcidConfigBroker;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
@@ -40,6 +31,14 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 import uk.ac.ebi.ddi.security.UserAuthenticationUserIdSource;
+import uk.ac.ebi.ddi.social.connect.mongo.MongoConnectionService;
+import uk.ac.ebi.ddi.social.connect.mongo.MongoUsersConnectionRepository;
+import uk.ac.ebi.ddi.social.elixir.api.Elixir;
+import uk.ac.ebi.ddi.social.elixir.connect.ElixirConnectionFactory;
+import uk.ac.ebi.ddi.social.orcid.api.OrcidApi;
+import uk.ac.ebi.ddi.social.orcid.connect.OrcidConnectionFactory;
+import uk.ac.ebi.ddi.social.orcid.utils.OrcidConfig;
+import uk.ac.ebi.ddi.social.orcid.utils.OrcidConfigBroker;
 
 @Configuration
 @EnableSocial
