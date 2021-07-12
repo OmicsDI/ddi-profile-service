@@ -31,6 +31,17 @@ public class MongoConfig extends AbstractMongoConfiguration {
     public Mongo mongo() throws Exception {
 
         ServerAddress serverAddress = new ServerAddress(env.getRequiredProperty("mongo.host"));
+        ServerAddress serverAddressSecondary = new ServerAddress(env.getRequiredProperty("mongo.host.two"));
+        List<ServerAddress> serverAddressList = new ArrayList<>();
+        MongoClientOptions.Builder options = MongoClientOptions.builder()
+                .readPreference(ReadPreference.secondaryPreferred())
+                ;
+
+        if (env.getRequiredProperty("mongo.replicaset") != null) {
+            options.requiredReplicaSetName(env.getRequiredProperty("mongo.replicaset"));
+        }
+        serverAddressList.add(serverAddress);
+        serverAddressList.add(serverAddressSecondary);
         List<MongoCredential> credentials = new ArrayList<>();
         credentials.add(MongoCredential.createCredential(
                 env.getRequiredProperty("mongo.username"),
@@ -38,7 +49,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
                 env.getRequiredProperty("mongo.password").toCharArray()
         ));
 
-        return new MongoClient(serverAddress, credentials);
+        return new MongoClient(serverAddress, credentials, options.build());
     }
 
 }
