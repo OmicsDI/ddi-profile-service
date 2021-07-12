@@ -22,8 +22,6 @@ import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.mongo.MongoConnectionService;
 import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.elixir.api.Elixir;
-import org.springframework.social.elixir.connect.ElixirConnectionFactory;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.github.api.GitHub;
@@ -40,6 +38,8 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 import uk.ac.ebi.ddi.security.UserAuthenticationUserIdSource;
+import uk.ac.ebi.ddi.social.elixir.api.Elixir;
+import uk.ac.ebi.ddi.social.elixir.connect.ElixirConnectionFactory;
 
 @Configuration
 @EnableSocial

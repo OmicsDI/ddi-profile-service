@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UserProfile;
-import org.springframework.social.elixir.api.ElixirProfile;
+
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.github.api.GitHub;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.userinfo.GoogleUserInfo;
 import org.springframework.social.twitter.api.Twitter;
 import org.europepmc.springframework.social.orcid.api.OrcidApi;
-import org.springframework.social.elixir.api.Elixir;
+
 import org.europepmc.springframework.social.orcid.jaxb.beans.PersonalDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.ddi.security.model.DataSet;
 import uk.ac.ebi.ddi.security.model.MongoUser;
 import uk.ac.ebi.ddi.security.service.MongoUserDetailsService;
+import uk.ac.ebi.ddi.social.elixir.api.Elixir;
+import uk.ac.ebi.ddi.social.elixir.api.ElixirProfile;
 
 /*
 * automatically create User with connection data
