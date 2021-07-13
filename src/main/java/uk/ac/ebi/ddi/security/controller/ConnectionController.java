@@ -3,16 +3,11 @@ package uk.ac.ebi.ddi.security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.*;
 import org.springframework.social.connect.mongo.MongoUsersConnectionRepository;
-import org.springframework.social.connect.support.OAuth2Connection;
-import org.springframework.social.facebook.api.Facebook;
-import org.europepmc.springframework.social.orcid.api.OrcidApi;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.ddi.security.model.MongoUser;
 import uk.ac.ebi.ddi.security.security.UserSecureUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
