@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: omicsdi-ddi-profile-service
+  labels:
+    app: omicsdi-ddi-profile-service
+spec:
+  ports:
+    - port: 8090
+      targetPort: 8080
+  selector:
+    app: omicsdi-ddi-profile-pod

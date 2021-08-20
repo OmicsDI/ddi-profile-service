@@ -11,4 +11,4 @@ spec:
           - path: /profilews
             backend:
               serviceName: omicsdi-ddi-profile-service
-              servicePort: 8080
+              servicePort: 8090
